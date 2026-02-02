@@ -1,24 +1,29 @@
 // write code that emulates how blockchains works
-const SHA256 = require ("sha256");
+// const SHA256 = require ("sha256");
+
 class Blockchain {
-    constructor () { //constructor initiliases the chain and pendingTransaction array
-        this.chain = [this.CreateGenesisBlock()]; //chain array contains blocks of transactions added to a network. blockchains start with a genesis block hence array contains function that create a genesisBlock. genesis block can be hardcoded into the chain array too.
+
+    constructor () {
+        // runs when you create a new instance
+        //constructor initiliases the chain and pendingTransaction array
+        this.chain = [this.createGenesisBlock()]; //chain array contains blocks of transactions added to a network. blockchains start with a genesis block hence array contains function that create a genesisBlock. genesis block can be hardcoded into the chain array too.
         this.pendingTransactions = []; // transactions not yet added to a block
-    };
-}
+    }
 
 
+
+//const SHA256 = require ("sha256");
 
 //genesis block function that will execute once in the constructor
-CreateGenesisBlock() { //function executes once since constructor function runs only once at the begenning of the program
+createGenesisBlock() {
+// function executes once since constructor function runs only once at the begenning of the program
     return {
         index: 1,
-        timestamp: Date.now();
+        timestamp: Date.now(),
         transactions: [],
         nonce: 0,
         hash: "hash", //only time a randomly calc hash is used or a add previousBlockHash since genesis block does not carry transactions
         previousBlockHash: "previousBlockHash",
-
     };
 }
 
@@ -36,7 +41,7 @@ generateHash(previousBlockHash, timestamp, pendingTransactions) {
     let hash = "";
     let nonce = 0;
     
-    while (hash.substring(0, 3)) !== "000" { //check if hash starts with a specific number of zeros (difficulty target), if it doesnt miner increments the nonce by 1 and tries again, if it does, they have mined the block, the found solution is broadcast to the network
+    while ((hash.substring(0, 3)) !== "000") { //check if hash starts with a specific number of zeros (difficulty target), if it doesnt miner increments the nonce by 1 and tries again, if it does, they have mined the block, the found solution is broadcast to the network
         //difficult target: control speed of the network. if miners find blocks too fast, network makes puzzle hard. if too slow, network makes makes puzzle easier
         //high target = easy mode
         //low target - hard mode. as targets gets smaller (closer to zero), the miner has to find hash with more leading zeros
@@ -60,7 +65,7 @@ return {hash, nonce};
 
 
 // function to create new transactions and add then to list of pending transactions
-createNewSTransction(amount, sender, recipient) {
+createNewTransction(amount, sender, recipient) {
     const newTransaction = {
         amount,
         sender,
@@ -71,7 +76,7 @@ createNewSTransction(amount, sender, recipient) {
 
 // function to create newblocks, allows to add pending transactions to a new block, calc the hash and add block to the chain
 
-createNewBlock () {
+createNewBlock() {
 
     const timestamp = Date.now();
     const transactions = this.pendingTransactions;
@@ -79,7 +84,7 @@ createNewBlock () {
     const generateHash = this.generateHash(previousBlockHash, timestamp, transactions); //calc hash of current block
 
     const newBlock = { // add details of a new block
-        index = this.chain.length + 1;
+        index: this.chain.length + 1,
         timestamp,
         transactions,
         nonce: generateHash.nonce,
@@ -93,4 +98,6 @@ createNewBlock () {
     return newBlock;
 }
 
-modules.exports = Blockchain; // to be able to access it outside the file
+}
+
+module.exports = Blockchain; // to be able to access it outside the file
